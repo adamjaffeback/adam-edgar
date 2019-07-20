@@ -6,10 +6,11 @@ const makeOriginalZipName = (quarter, year) => `${year}q${quarter}.zip`;
 const makeUrl = (quarter, year) => `https://www.sec.gov/files/dera/data/\
 financial-statement-data-sets/${makeOriginalZipName(quarter, year)}`;
 
-exports.getFiling = async (quarter, year) => {
+exports.filing = async (quarter, year) => {
   return new Promise((resolve, reject) => {
+    const fileName = makeOriginalZipName(quarter, year);
     const url = makeUrl(quarter, year);
-    const file = fs.createWriteStream(makeOriginalZipName(quarter, year));
+    const file = fs.createWriteStream(fileName);
 
     https.get(url, res => {
       if (res.statusCode !== 200) {
@@ -20,7 +21,7 @@ exports.getFiling = async (quarter, year) => {
       res.on('data', async data => file.write(data))
       .on('end', async () => {
         file.end();
-        resolve();
+        resolve(fileName);
       });
     })
     .on('error', reject);

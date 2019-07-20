@@ -1,9 +1,12 @@
 const validation = require('./inputValidation');
 const fetch = require('./fetch');
+const read = require('./read');
 
-module.exports = async function (quarter, year) {
+module.exports = async function processEdgarData (quarter, year) {
   validation.checkQuarter(quarter);
   validation.checkYear(year);
 
-  await fetch.getFiling(quarter, year);
+  const fileName = await fetch.filing(quarter, year);
+  const fileData = await read.zip(fileName);
+  return fileData;
 }
