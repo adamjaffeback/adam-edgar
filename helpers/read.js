@@ -15,3 +15,7 @@ exports.zip = async fileName => {
     });
   });
 }
+
+exports.fileInZip = async (zipObj, fileNameInZip) => {
+  return zipObj.file(fileNameInZip).async('string');
+}
