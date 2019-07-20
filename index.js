@@ -1,6 +1,6 @@
-const validation = require('./inputValidation');
-const fetch = require('./fetch');
-const read = require('./read');
+const validation = require('./helpers/inputValidation');
+const fetch = require('./helpers/fetch');
+const read = require('./helpers/read');
 
 module.exports = async function processEdgarData (quarter, year) {
   validation.checkQuarter(quarter);
