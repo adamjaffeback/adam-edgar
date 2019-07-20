@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/adamjaffeback/adam-edgar/issues"
   },
-  "homepage": "https://github.com/adamjaffeback/adam-edgar#readme"
+  "homepage": "https://github.com/adamjaffeback/adam-edgar#readme",
+  "dependencies": {
+    "jszip": "^3.2.2"
+  }
 }
