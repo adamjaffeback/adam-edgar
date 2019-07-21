@@ -1,23 +1,35 @@
-const xlsx = require('xlsx');
+const extractFromZip = require('./extractFromZip');
+const load = require('./load');
 
-exports.rawDataToWorkbook = async data => {
-  return new Promise((resolve, reject) => {
-    try {
-      const workbook = xlsx.read(data, {type: 'string'});
-      resolve(workbook);
-    } catch (e) {
-      reject(e);
-    }
+async function rawDataToJson (sheetName, data) {
+  let rows = data.split('\n');
+  const headers = rows.splice(0, 1)[0].split('\t');
+  rows = rows.map(row => row.split('\t'));
+
+  const rowsAsJson = rows.map(row => {
+    return row.reduce((acc, columnValue, index) => {
+      let column = headers[index];
+      acc[column] = columnValue;
+      return acc;
+    }, {});
   });
+
+  await load.saveJson(rowsAsJson, sheetName);
+  return rowsAsJson;
 }
 
-exports.workbooktoJson = async workbook => {
-  return new Promise((resolve, reject) => {
-    try {
-      const json = xlsx.utils.sheet_to_json(workbook);
-      resolve(json);
-    } catch (e) {
-      reject(e);
-    }
-  });
+exports.zipToJson = async (fileName) => {
+  /** @type {string[]} */
+  const files = await extractFromZip.files(fileName);
+
+  const json = await Promise.all(files.map(oneFile => {
+    let {fileName, data} = oneFile;
+    return rawDataToJson(fileName, data);
+  }));
+
+  return json.reduce((acc, oneFileJson, index) => {
+    let fileName = files[index].fileName;
+    acc[fileName] = json;
+    return acc;
+  }, {});
 }
