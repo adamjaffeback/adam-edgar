@@ -1,12 +1,17 @@
 const validation = require('./helpers/inputValidation');
-const extract = require('./helpers/extract');
-const read = require('./helpers/read');
+const extract = require('./helpers/extractFromSec');
+const transform = require('./helpers/transform');
+const load = require('./helpers/load');
 
 module.exports = async function processEdgarData (quarter, year) {
   validation.checkQuarter(quarter);
   validation.checkYear(year);
 
-  const fileName = await extract.filing(quarter, year);
-  const fileData = await read.zip(fileName);
-  return fileData;
+  // download zip to file system
+  /** @type {string} */
+  const zipFileName = await extract.filing(quarter, year);
+  /** @type {object} */
+  const json = await transform.zipToJson(zipFileName);
+  /** @type {Promise.<string>} */
+  return load.saveJson(json, zipFileName);
 }
