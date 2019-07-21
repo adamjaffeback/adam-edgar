@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/adamjaffeback/adam-edgar#readme",
   "dependencies": {
-    "jszip": "^3.2.2",
-    "xlsx": "^0.14.3"
+    "jszip": "^3.2.2"
   }
 }
