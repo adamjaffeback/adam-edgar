@@ -17,15 +17,22 @@ async function _readZipMetaData (fileName) {
 }
 
 async function _readFileFromZip (zipObj, fileNameInZip) {
-  // TODO: write string to fs as log
   const data = await zipObj.file(fileNameInZip).async('string');
+  // write string to fs as log
+  await new Promise(resolve => {
+    fs.writeFile(`./stringified-${fileNameInZip}`, data, async err => {
+      if (err) throw err;
+      resolve();
+    });
+  });
+
   return {
     fileName: fileNameInZip,
     data,
   };
 }
 
-exports.files = async (zipFileName) => {
+exports.files = async zipFileName => {
   const metaData = await _readZipMetaData(zipFileName);
   /** @type {string[]} */
   const fileNamesInZip = Object.keys(metaData.files)
