@@ -1,15 +1,16 @@
 const fs = require('fs');
+const jsonfile = require('jsonfile');
 
 exports.saveJson = async (json, zipFileName) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async (resolve, reject) => {
     // num.txt => num
     const withoutExtension = zipFileName.substr(0, zipFileName.length - 4);
     const jsonFileName = `./${withoutExtension}.json`;
 
-    // TODO: JSON.stringify runs out of memory
-    fs.writeFile(jsonFileName, JSON.stringify(json), err => {
-      if (err) reject(err);
+    jsonfile.writeFile(jsonFileName, json)
+    .then(() => {
       resolve(`Successfully downloaded ${jsonFileName}.`);
-    });
+    })
+    .catch(err => reject(err));
   });
 }
