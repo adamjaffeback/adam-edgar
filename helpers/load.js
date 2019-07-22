@@ -7,10 +7,11 @@ exports.saveJson = async (json, zipFileName) => {
     const withoutExtension = zipFileName.substr(0, zipFileName.length - 4);
     const jsonFileName = `./${withoutExtension}.json`;
 
-    jsonfile.writeFile(jsonFileName, json)
-    .then(() => {
+    try {
+      await jsonfile.writeFile(jsonFileName, json);
       resolve(`Successfully downloaded ${jsonFileName}.`);
-    })
-    .catch(err => reject(err));
+    } catch (err) {
+      reject(err);
+    }
   });
 }
