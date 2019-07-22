@@ -21,15 +21,13 @@ async function rawDataToJson (sheetName, data) {
 exports.zipToJson = async (fileName) => {
   /** @type {string[]} */
   const files = await extractFromZip.files(fileName);
-
-  const json = await Promise.all(files.map(oneFile => {
+  const listOfJson = [];
+  for (let i = 0; i < files.length; i++) {
+    let oneFile = files[i];
     let {fileName, data} = oneFile;
-    return rawDataToJson(fileName, data);
-  }));
+    let json = await rawDataToJson(fileName, data);
+    listOfJson.push(json);
+  }
 
-  return json.reduce((acc, oneFileJson, index) => {
-    let fileName = files[index].fileName;
-    acc[fileName] = json;
-    return acc;
-  }, {});
+  return listOfJson;
 }
