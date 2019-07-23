@@ -59,6 +59,7 @@ Rather than providing your own variables and doing the command line setup descri
 - These quarterly files are pretty dang big! I had to up the node memory limitations with `--max-old-space-size` and do transformations on files in series, rather than in parallel
 - I knew I wanted to save the individual `*.txt => *.json` file transformations for auditability, but I wavered on whether to create one giant JSON file for the entire quarter containing the concatenation of the smaller files. In the end, I *was* able to accomplish this, but it was difficult because native `JSON.stringify` runs out of memory due to the V8 engine's constraints
 - I didn't trust JSZip to read and interpret data with validity. As a result, I use JSZip to get the zip metadata (filenames), but then unzip the directory fully as part of the ETL and do direct work on the `*.txt` files
+- Not a decision point, but a difficulty I had to overcome: I accidentally committed a large log file to git. I quickly removed the file and added it to .gitignore once I realized what I'd done. However, because it was already saved in history, GitHub wouldn't accept my push to remote. I had to use [bfg](https://rtyley.github.io/bfg-repo-cleaner/), a great tool, to get rid of it!
 
 ## Todos
 
