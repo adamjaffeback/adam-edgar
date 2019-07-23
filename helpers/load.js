@@ -1,15 +1,11 @@
 const fs = require('fs');
 const jsonfile = require('jsonfile');
 
-exports.saveJson = async (json, zipFileName) => {
+exports.saveJson = async (json, target) => {
   return new Promise(async (resolve, reject) => {
-    // num.txt => num
-    const withoutExtension = zipFileName.substr(0, zipFileName.length - 4);
-    const jsonFileName = `./${withoutExtension}.json`;
-
     try {
-      await jsonfile.writeFile(jsonFileName, json);
-      resolve(`Successfully downloaded ${jsonFileName}.`);
+      await jsonfile.writeFile(target, json);
+      resolve(`Successfully downloaded ${target}.`);
     } catch (err) {
       reject(err);
     }
