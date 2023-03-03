@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/adamjaffeback/adam-edgar#readme",
   "dependencies": {
-    "extract-zip": "^1.6.7",
+    "extract-zip": "^1.7.0",
     "jsonfile": "^5.0.0",
     "jszip": "^3.2.2",
     "unzipper": "^0.10.1"
